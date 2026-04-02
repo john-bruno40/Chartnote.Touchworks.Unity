@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Chartnote.TouchWorks.Unity.Api/Chartnote.TouchWorks.Unity.Api.csproj" />
+  </Folder>
+</Solution>
