@@ -59,4 +59,14 @@ public class UnityHttpClient : IUnityClient
             "Awaiting TouchWorks Unity WSDL. " +
             "Replace with: unity.Magic(action, ...)");
     }
+
+    public async Task RetireSecurityTokenAsync(string token, string appName)
+    {
+        // TODO: Replace with actual SOAP call once WSDL is available
+        // unity.RetireSecurityToken(token, appName)
+        throw new NotImplementedException(
+            "Awaiting TouchWorks Unity WSDL. " +
+            "Replace with: unity.RetireSecurityToken(token, appName)");
+    }
+
 }

@@ -32,10 +32,13 @@ public class UnityTokenService
             _config.ServiceUsername,
             _config.ServicePassword);
 
+        if (token.StartsWith("error:", StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException(
+                $"Unity returned an error getting security token: {token}");
+
         session.SecurityToken = token;
         Console.WriteLine($"[Auth:{session.EhrUsername}] Security token obtained.");
     }
-
     /// <summary>
     /// Layer 2: Authenticate the physician against the TouchWorks EHR.
     /// Must be called after GetSecurityTokenAsync for this session.
@@ -59,4 +62,20 @@ public class UnityTokenService
         Console.WriteLine($"[Auth:{session.EhrUsername}] Physician authentication complete.");
         return result;
     }
+
+    /// <summary>
+    /// Retires the security token at the end of a physician session.
+    /// Always call this when the session ends to clean up server-side resources.
+    /// </summary>
+    public async Task RetireAsync(UnitySession session)
+    {
+        if (string.IsNullOrEmpty(session.SecurityToken))
+            return;
+
+        await _client.RetireSecurityTokenAsync(session.SecurityToken, _config.AppName);
+        session.SecurityToken = null;
+        session.IsAuthenticated = false;
+        Console.WriteLine($"[Auth:{session.EhrUsername}] Security token retired.");
+    }
+
 }

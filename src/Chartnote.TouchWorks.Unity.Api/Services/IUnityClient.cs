@@ -29,4 +29,11 @@ public interface IUnityClient
         string param5 = "",
         string param6 = "",
         DataSet? data = null);
+
+    /// <summary>
+    /// Retires the security token at the end of a session.
+    /// Always call this on session end to clean up server-side resources.
+    /// </summary>
+    Task RetireSecurityTokenAsync(string token, string appName);
+
 }

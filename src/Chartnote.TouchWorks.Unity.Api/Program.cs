@@ -67,6 +67,9 @@ try
 
     Console.WriteLine();
     Console.WriteLine("=== All steps completed successfully ===");
+
+    // Always retire the token at session end
+    await tokenService.RetireAsync(session);
 }
 catch (NotImplementedException ex)
 {
