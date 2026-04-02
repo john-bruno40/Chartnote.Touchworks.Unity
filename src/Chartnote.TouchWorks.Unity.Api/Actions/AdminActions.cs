@@ -57,4 +57,37 @@ public class AdminActions
             token: session.SecurityToken!,
             param1: hoursBack);
     }
+
+    /// <summary>
+    /// Sets the user's site. A site is tied to an organization in TouchWorks.
+    /// May need to be called before other actions in multi-org deployments.
+    /// </summary>
+    public async Task<DataSet> SetSiteFocusAsync(UnitySession session, string siteId)
+    {
+        session.RequireAuthenticated();
+        return await _client.MagicAsync(
+            action: "SetSiteFocus",
+            ehrUsername: session.EhrUsername,
+            appName: _config.AppName,
+            patientId: "",
+            token: session.SecurityToken!,
+            param1: siteId);
+    }
+
+    /// <summary>
+    /// Returns the internal organization ID linked to the organization name.
+    /// Typically used by an application launched by TouchWorks EHR.
+    /// </summary>
+    public async Task<DataSet> GetOrganizationIDAsync(UnitySession session, string organizationName)
+    {
+        session.RequireAuthenticated();
+        return await _client.MagicAsync(
+            action: "GetOrganizationID",
+            ehrUsername: session.EhrUsername,
+            appName: _config.AppName,
+            patientId: "",
+            token: session.SecurityToken!,
+            param1: organizationName);
+    }
+
 }

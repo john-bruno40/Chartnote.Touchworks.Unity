@@ -56,3 +56,4 @@ C:\Dev\Chartnote.TouchWorks.Unity\src\Chartnote.TouchWorks.Unity.Api\obj\Debug\n
 C:\Dev\Chartnote.TouchWorks.Unity\src\Chartnote.TouchWorks.Unity.Api\obj\Debug\net8.0\Chartnote.TouchWorks.Unity.Api.pdb
 C:\Dev\Chartnote.TouchWorks.Unity\src\Chartnote.TouchWorks.Unity.Api\obj\Debug\net8.0\Chartnote.TouchWorks.Unity.Api.genruntimeconfig.cache
 C:\Dev\Chartnote.TouchWorks.Unity\src\Chartnote.TouchWorks.Unity.Api\obj\Debug\net8.0\ref\Chartnote.TouchWorks.Unity.Api.dll
+C:\Dev\Chartnote.TouchWorks.Unity\src\Chartnote.TouchWorks.Unity.Api\obj\Debug\net8.0\Chartnote.TouchWorks.Unity.Api.sourcelink.json

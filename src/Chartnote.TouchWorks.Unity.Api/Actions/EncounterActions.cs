@@ -68,4 +68,29 @@ public class EncounterActions
             patientId: patientId,
             token: session.SecurityToken!);
     }
+
+    public async Task<DataSet> GetEncounterListAsync(UnitySession session, string patientId)
+    {
+        session.RequireAuthenticated();
+        return await _client.MagicAsync(
+            action: "GetEncounterList",
+            ehrUsername: session.EhrUsername,
+            appName: _config.AppName,
+            patientId: patientId,
+            token: session.SecurityToken!);
+    }
+
+    public async Task<DataSet> GetScheduleAsync(UnitySession session, string startDate, string endDate)
+    {
+        session.RequireAuthenticated();
+        return await _client.MagicAsync(
+            action: "GetSchedule",
+            ehrUsername: session.EhrUsername,
+            appName: _config.AppName,
+            patientId: "",
+            token: session.SecurityToken!,
+            param1: startDate,
+            param2: endDate);
+    }
+
 }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Chartnote.TouchWorks.Unity.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+682e835035c4d459158497262f3024343934b587")]
 [assembly: System.Reflection.AssemblyProductAttribute("Chartnote.TouchWorks.Unity.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Chartnote.TouchWorks.Unity.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

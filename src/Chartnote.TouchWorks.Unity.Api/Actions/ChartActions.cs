@@ -66,11 +66,11 @@ public class ChartActions
             token: session.SecurityToken!);
     }
 
-    public async Task<DataSet> GetProblemsAsync(UnitySession session, string patientId)
+    public async Task<DataSet> GetPatientProblemsAsync(UnitySession session, string patientId)
     {
         session.RequireAuthenticated();
         return await _client.MagicAsync(
-            action: "GetProblems",
+            action: "GetPatientProblems",
             ehrUsername: session.EhrUsername,
             appName: _config.AppName,
             patientId: patientId,
@@ -93,6 +93,28 @@ public class ChartActions
         session.RequireAuthenticated();
         return await _client.MagicAsync(
             action: "GetOrders",
+            ehrUsername: session.EhrUsername,
+            appName: _config.AppName,
+            patientId: patientId,
+            token: session.SecurityToken!);
+    }
+
+    public async Task<DataSet> GetEncounterSummaryAsync(UnitySession session, string patientId)
+    {
+        session.RequireAuthenticated();
+        return await _client.MagicAsync(
+            action: "GetEncounterSummary",
+            ehrUsername: session.EhrUsername,
+            appName: _config.AppName,
+            patientId: patientId,
+            token: session.SecurityToken!);
+    }
+
+    public async Task<DataSet> GetPatientDiagnosisAsync(UnitySession session, string patientId)
+    {
+        session.RequireAuthenticated();
+        return await _client.MagicAsync(
+            action: "GetPatientDiagnosis",
             ehrUsername: session.EhrUsername,
             appName: _config.AppName,
             patientId: patientId,

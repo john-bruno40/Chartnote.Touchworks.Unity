@@ -91,4 +91,22 @@ public class DocumentActions
             token: session.SecurityToken!,
             param1: commentText);
     }
+
+    /// <summary>
+    /// Appends text to an existing encounter note.
+    /// Core Chartnote write-back action — replaces the Chrome extension approach.
+    /// Requires SetEncounterFocus before calling.
+    /// </summary>
+    public async Task<DataSet> SaveEncounterNoteAsync(UnitySession session, string patientId, string noteText)
+    {
+        session.RequireAuthenticated();
+        return await _client.MagicAsync(
+            action: "SaveEncounterNote",
+            ehrUsername: session.EhrUsername,
+            appName: _config.AppName,
+            patientId: patientId,
+            token: session.SecurityToken!,
+            param1: noteText);
+    }
+
 }
