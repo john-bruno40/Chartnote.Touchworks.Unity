@@ -24,14 +24,14 @@ public class AdminActions
     /// Connection test — no security token or physician credentials needed.
     /// Always the first call to verify endpoint connectivity.
     /// </summary>
-    public async Task<DataSet> EchoAsync(string testValue = "Chartnote-Echo-Test")
+     public async Task<DataSet> EchoAsync(UnitySession session, string testValue = "Chartnote-Echo-Test")
     {
         return await _client.MagicAsync(
             action: "Echo",
-            ehrUsername: "",
+            ehrUsername: session.EhrUsername,
             appName: _config.AppName,
             patientId: "",
-            token: "",
+            token: session.SecurityToken ?? "",
             param1: testValue);
     }
 

@@ -40,15 +40,15 @@ Console.WriteLine();
 
 try
 {
-    // Step 1 — Echo (no credentials needed)
-    Console.WriteLine("[1/5] Echo...");
-    var echoResult = await admin.EchoAsync("Chartnote-TouchWorks-Test");
-    Console.WriteLine($"      Echo OK — tables returned: {echoResult.Tables.Count}");
-
-    // Step 2 — GetSecurityToken (app-level)
-    Console.WriteLine("[2/5] GetSecurityToken...");
+    // Step 1 — GetSecurityToken (app-level)
+    Console.WriteLine("[1/5] GetSecurityToken...");
     await tokenService.GetSecurityTokenAsync(session);
     Console.WriteLine($"      Token obtained.");
+
+    // Step 2 — Echo (Ubiquity requires token)
+    Console.WriteLine("[2/5] Echo...");
+    var echoResult = await admin.EchoAsync(session, "Chartnote-TouchWorks-Test");
+    Console.WriteLine($"      Echo OK — tables returned: {echoResult.Tables.Count}");
 
     // Step 3 — GetUserAuthentication (physician-level)
     Console.WriteLine("[3/5] GetUserAuthentication...");
