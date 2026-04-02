@@ -28,7 +28,7 @@ public interface IUnityClient
         string param4 = "",
         string param5 = "",
         string param6 = "",
-        DataSet? data = null);
+        byte[]? data = null);
 
     /// <summary>
     /// Retires the security token at the end of a session.
