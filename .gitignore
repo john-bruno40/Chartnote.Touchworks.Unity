@@ -1,0 +1,7 @@
+## Local configuration — never commit credentials
+appsettings.json
+documents/
+
+## .NET build artifacts
+**/bin/
+**/obj/

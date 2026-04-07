@@ -1,4 +1,5 @@
 using System.Data;
+using System.Collections.Generic;
 using Chartnote.TouchWorks.Unity.Api.Auth;
 using Chartnote.TouchWorks.Unity.Api.Config;
 using Chartnote.TouchWorks.Unity.Api.Services;
@@ -107,6 +108,61 @@ public class DocumentActions
             patientId: patientId,
             token: session.SecurityToken!,
             param1: noteText);
+    }
+
+    /// <summary>
+    /// Appends text to a specific note section in the focused encounter note.
+    /// Parameter mapping should be validated against sandbox action details.
+    /// </summary>
+    public async Task<DataSet> SaveEncounterNoteSectionAsync(
+        UnitySession session,
+        string patientId,
+        string sectionName,
+        string sectionText)
+    {
+        session.RequireAuthenticated();
+        return await _client.MagicAsync(
+            action: "SaveEncounterNote",
+            ehrUsername: session.EhrUsername,
+            appName: _config.AppName,
+            patientId: patientId,
+            token: session.SecurityToken!,
+            param1: sectionText,
+            param2: sectionName);
+    }
+
+    /// <summary>
+    /// Saves standard note sections to the focused encounter note in a stable order.
+    /// Sections with empty text are skipped.
+    /// </summary>
+    public async Task<IReadOnlyList<DataSet>> SaveStandardEncounterNoteSectionsAsync(
+        UnitySession session,
+        string patientId,
+        EncounterNoteSections sections)
+    {
+        if (sections is null)
+            throw new ArgumentNullException(nameof(sections));
+
+        var results = new List<DataSet>();
+
+        async Task SaveIfPresentAsync(string sectionName, string sectionText)
+        {
+            if (string.IsNullOrWhiteSpace(sectionText))
+                return;
+
+            var result = await SaveEncounterNoteSectionAsync(session, patientId, sectionName, sectionText);
+            results.Add(result);
+        }
+
+        await SaveIfPresentAsync("Chief Complaint", sections.ChiefComplaint);
+        await SaveIfPresentAsync("HPI", sections.Hpi);
+        await SaveIfPresentAsync("ROS", sections.Ros);
+        await SaveIfPresentAsync("Physical Exam", sections.PhysicalExam);
+        await SaveIfPresentAsync("Assessment", sections.Assessment);
+        await SaveIfPresentAsync("Plan", sections.Plan);
+        await SaveIfPresentAsync("Vitals", sections.Vitals);
+
+        return results;
     }
 
 }

@@ -23,6 +23,8 @@ var httpClient = new UnityHttpClient(unityConfig);
 var tokenService = new UnityTokenService(httpClient, unityConfig);
 var admin = new AdminActions(httpClient, unityConfig);
 var patient = new PatientActions(httpClient, unityConfig);
+var encounter = new EncounterActions(httpClient, unityConfig);
+var document = new DocumentActions(httpClient, unityConfig);
 
 // ─── Per-physician session (one per physician, never shared) ──────────────────
 
@@ -64,6 +66,46 @@ try
     Console.WriteLine("[5/5] GetPatientList...");
     var patientList = await patient.GetPatientListAsync(session);
     Console.WriteLine($"      Patient list OK — tables returned: {patientList.Tables.Count}");
+
+    // Optional Step 6 — Save standard note sections to a focused encounter
+    var runNoteWriteTest = string.Equals(
+        Environment.GetEnvironmentVariable("TW_RUN_NOTE_WRITE_TEST"),
+        "true",
+        StringComparison.OrdinalIgnoreCase);
+    var allowSandboxWrites = string.Equals(
+        Environment.GetEnvironmentVariable("TW_ALLOW_SANDBOX_WRITES"),
+        "true",
+        StringComparison.OrdinalIgnoreCase);
+
+    if (runNoteWriteTest && allowSandboxWrites)
+    {
+        var testPatientId = Environment.GetEnvironmentVariable("TW_TEST_PATIENT_ID")
+            ?? throw new InvalidOperationException("Set TW_TEST_PATIENT_ID when TW_RUN_NOTE_WRITE_TEST=true.");
+        var testVisitId = Environment.GetEnvironmentVariable("TW_TEST_VISIT_ID")
+            ?? throw new InvalidOperationException("Set TW_TEST_VISIT_ID when TW_RUN_NOTE_WRITE_TEST=true.");
+
+        Console.WriteLine("[6/6] SaveStandardEncounterNoteSections...");
+
+        await encounter.SetEncounterFocusAsync(session, testPatientId, testVisitId);
+
+        var sections = new EncounterNoteSections
+        {
+            ChiefComplaint = "Follow-up visit.",
+            Hpi = "Patient reports improvement since last visit.",
+            Ros = "Negative except as noted in HPI.",
+            PhysicalExam = "No acute distress. Exam otherwise unremarkable.",
+            Assessment = "Stable chronic condition.",
+            Plan = "Continue current regimen. Return in 4 weeks.",
+            Vitals = "BP 120/78, HR 72, Temp 98.6F, RR 16"
+        };
+
+        var saveResults = await document.SaveStandardEncounterNoteSectionsAsync(session, testPatientId, sections);
+        Console.WriteLine($"      Note section save OK — section calls executed: {saveResults.Count}");
+    }
+    else
+    {
+        Console.WriteLine("[Info] Skipping note write test. Set TW_RUN_NOTE_WRITE_TEST=true and TW_ALLOW_SANDBOX_WRITES=true to enable.");
+    }
 
     Console.WriteLine();
     Console.WriteLine("=== All steps completed successfully ===");
